@@ -43,7 +43,7 @@ def delete_member(member_id: int, db: Session = Depends(get_db)) -> None:
     return None
 
 
-@router.post("/login", response_model=MemberResponse)
+@router.post("/login", response_model=MemberResponse, status_code=status.HTTP_200_OK)
 def login_member(member_login: MemberLogin, db: Session = Depends(get_db)) -> MemberResponse:
     member = member_service.login(db, member_login)
 
