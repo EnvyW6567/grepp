@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Field
 from datetime import datetime
 from enum import Enum
 from typing import Optional
+
+from pydantic import BaseModel
 
 
 class Role(str, Enum):
@@ -31,7 +32,7 @@ class MemberInDB(MemberBase):
     modified_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class MemberResponse(BaseModel):
@@ -44,3 +45,8 @@ class MemberResponse(BaseModel):
     model_config = {
         'from_attributes': True
     }
+
+
+class MemberLogin(BaseModel):
+    username: str
+    password: str

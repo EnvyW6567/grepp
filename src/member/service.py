@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from src.member.model import Member, Role
 from src.member.repository import MemberRepository
-from src.member.schema import MemberCreate, MemberUpdate, MemberResponse
+from src.member.schema import MemberCreate, MemberUpdate, MemberResponse, MemberLogin
 
 
 class MemberService:
@@ -16,6 +16,14 @@ class MemberService:
         salt = os.urandom(32)
         pw_hash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
         return salt.hex() + ':' + pw_hash.hex()
+
+    def _verify_password(self, hashed_password: str, password: str) -> bool:
+        salt_hex, stored_hash = hashed_password.split(':')
+        salt = bytes.fromhex(salt_hex)
+
+        pw_hash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+
+        return pw_hash.hex() == stored_hash
 
     def _get_by_id(self, db: Session, member_id: int) -> MemberResponse:
         member = self.repository.find_by_id(db, member_id)
@@ -56,7 +64,7 @@ class MemberService:
             setattr(member, key, value)
 
         updated_member = self.repository.save(db, member)
-        
+
         return MemberResponse.model_validate(updated_member)
 
     def delete(self, db: Session, member_id: int) -> bool:
@@ -65,3 +73,11 @@ class MemberService:
             return False
 
         return self.repository.delete(db, member)
+
+    def login(self, db: Session, member_login: MemberLogin) -> MemberResponse | None:
+        member = self.repository.find_by_username(db, member_login.username)
+
+        if not self._verify_password(member.password, member_login.password):
+            return None
+
+        return MemberResponse.model_validate(member)

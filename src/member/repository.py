@@ -4,10 +4,10 @@ from src.member.model import Member
 
 
 class MemberRepository:
-    def find_by_id(self, db: Session, member_id: int):
+    def find_by_id(self, db: Session, member_id: int) -> Member:
         return db.query(Member).filter(Member.id == member_id).first()
 
-    def find_by_username(self, db: Session, username: str):
+    def find_by_username(self, db: Session, username: str) -> Member:
         return db.query(Member).filter(Member.username == username).first()
 
     def save(self, db: Session, member: Member):
