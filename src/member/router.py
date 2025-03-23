@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from src.db.db import get_db
-from src.member.schema import MemberResponse, MemberCreate, MemberUpdate, MemberLogin
+from src.member.schema import MemberResponse, MemberCreate, MemberUpdate, MemberLogin, LoginResponse
 from src.member.service import MemberService
 
 router = APIRouter(
@@ -43,11 +43,11 @@ def delete_member(member_id: int, db: Session = Depends(get_db)) -> None:
     return None
 
 
-@router.post("/login", response_model=MemberResponse, status_code=status.HTTP_200_OK)
-def login_member(member_login: MemberLogin, db: Session = Depends(get_db)) -> MemberResponse:
-    member = member_service.login(db, member_login)
+@router.post("/login", response_model=LoginResponse, status_code=status.HTTP_200_OK)
+def login_member(member_login: MemberLogin, db: Session = Depends(get_db)) -> LoginResponse:
+    loginResponse = member_service.login(db, member_login)
 
-    if member is None:
+    if loginResponse is None:
         raise HTTPException(status_code=401, detail="Incorrect username or password")
 
-    return member
+    return loginResponse

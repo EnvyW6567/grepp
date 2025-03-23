@@ -25,16 +25,6 @@ class MemberUpdate(BaseModel):
     role: Optional[Role] = None
 
 
-class MemberInDB(MemberBase):
-    id: int
-    role: Role
-    created_at: datetime
-    modified_at: datetime
-
-    class Config:
-        from_attributes = True
-
-
 class MemberResponse(BaseModel):
     id: int
     username: str
@@ -45,6 +35,10 @@ class MemberResponse(BaseModel):
     model_config = {
         'from_attributes': True
     }
+
+
+class LoginResponse(BaseModel):
+    access_token: str
 
 
 class MemberLogin(BaseModel):

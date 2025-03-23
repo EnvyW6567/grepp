@@ -3,9 +3,10 @@ import os
 
 from sqlalchemy.orm import Session
 
+from src.core.security.security import create_access_token
 from src.member.model import Member, Role
 from src.member.repository import MemberRepository
-from src.member.schema import MemberCreate, MemberUpdate, MemberResponse, MemberLogin
+from src.member.schema import MemberCreate, MemberUpdate, MemberResponse, MemberLogin, LoginResponse
 
 
 class MemberService:
@@ -74,10 +75,17 @@ class MemberService:
 
         return self.repository.delete(db, member)
 
-    def login(self, db: Session, member_login: MemberLogin) -> MemberResponse | None:
+    def login(self, db: Session, member_login: MemberLogin) -> LoginResponse | None:
         member = self.repository.find_by_username(db, member_login.username)
 
-        if not self._verify_password(member.password, member_login.password):
+        if not member or not self._verify_password(member.password, member_login.password):
             return None
 
-        return MemberResponse.model_validate(member)
+        payload = {
+            "id": member.id,
+            "username": member.username,
+            "role": member.role.value
+        }
+        access_token = create_access_token(data=payload)
+
+        return LoginResponse.model_validate({"access_token": access_token})
