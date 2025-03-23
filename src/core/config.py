@@ -1,14 +1,19 @@
 import os
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 class Settings:
-    POSTGERSQL_USER: str = os.getenv('POSTGRESQL_USER')
-    POSTGERSQL_PASSWORD: str = os.getenv('POSTGRESQL_PASSWORD')
-    POSTGERSQL_DB: str = os.getenv('POSTGRESQL_DB')
-    POSTGERSQL_HOST: str = os.getenv('POSTGRESQL_HOST', "localhost")
-    POSTGERSQL_PORT: str = os.getenv('POSTGRESQL_PORT', 5432)
+    POSTGRESQL_USER: str = os.getenv('POSTGRESQL_USER')
+    POSTGRESQL_PASSWORD: str = os.getenv('POSTGRESQL_PASSWORD')
+    POSTGRESQL_DATABASE: str = os.getenv('POSTGRESQL_DATABASE')
+    POSTGRESQL_HOST: str = os.getenv('POSTGRESQL_HOST', "localhost")
+    POSTGRESQL_PORT: str = os.getenv('POSTGRESQL_PORT', 5432)
 
-    DATABASE_URL = f'postgresql://{POSTGERSQL_USER}:{POSTGERSQL_PASSWORD}@{POSTGERSQL_HOST}:{POSTGERSQL_PORT}/{POSTGERSQL_DB}'
+    DATABASE_URL = (f'postgresql://{POSTGRESQL_USER}:{POSTGRESQL_PASSWORD}@{POSTGRESQL_HOST}:{POSTGRESQL_PORT}/'
+                    f'{POSTGRESQL_DATABASE}')
 
 
 settings = Settings()
