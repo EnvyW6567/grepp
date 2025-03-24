@@ -70,6 +70,7 @@ class MemberService:
 
     def delete(self, db: Session, member_id: int) -> bool:
         member = self.repository.find_by_id(db, member_id)
+
         if not member:
             return False
 
