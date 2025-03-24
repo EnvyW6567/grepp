@@ -15,8 +15,8 @@ member_service = MemberService()
 
 
 @router.post("/", response_model=MemberResponse, status_code=status.HTTP_201_CREATED)
-def create_member(member: MemberCreate, db: Session = Depends(get_db)) -> MemberResponse:
-    member = member_service.create(db=db, member_create=member)
+def create_member(member_create: MemberCreate, db: Session = Depends(get_db)) -> MemberResponse:
+    member = member_service.create(db, member_create)
 
     if member is None:
         raise HTTPException(status_code=400, detail="Username already registered")
