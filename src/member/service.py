@@ -4,7 +4,7 @@ import os
 from sqlalchemy.orm import Session
 
 from src.core.security.security import create_access_token
-from src.member.model import Member, Role
+from src.member.model import Member
 from src.member.repository import MemberRepository
 from src.member.schema import MemberCreate, MemberUpdate, MemberResponse, MemberLogin, LoginResponse
 
@@ -45,7 +45,7 @@ class MemberService:
         member = Member(
             username=member_create.username,
             password=hashed_password,
-            role=Role.USER
+            role=member_create.role
         )
 
         saved_member = self.repository.save(db, member)
