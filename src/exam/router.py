@@ -32,12 +32,9 @@ def get_all_exams(db: Session = Depends(get_db)):
 @router.get("/{exam_id}", response_model=ExamResponse)
 def get_exam(
         exam_id: int,
-        db: Session = Depends(get_db),
+        db: Session = Depends(get_db)
 ):
     exam = exam_service.get_by_id(db, exam_id)
-
-    if not exam:
-        raise HTTPException(status_code=404, detail="Exam not found")
 
     return exam
 
@@ -54,7 +51,7 @@ def create_exam(
 @admin_router.get("/", response_model=list[ExamResponse])
 def get_all_exams(
         db: Session = Depends(get_db),
-        admin: Member = Depends(get_admin_member)  # 로깅 용도로 사용 예정
+        admin: Member = Depends(get_admin_member)
 ):
     return exam_service.get_all(db)
 
@@ -63,12 +60,9 @@ def get_all_exams(
 def get_any_exam(
         exam_id: int,
         db: Session = Depends(get_db),
-        admin: Member = Depends(get_admin_member)  # 로깅 용도로 사용 예정
+        admin: Member = Depends(get_admin_member)
 ):
     exam = exam_service.get_by_id(db, exam_id)
-
-    if not exam:
-        raise HTTPException(status_code=404, detail="Exam not found")
 
     return exam
 
