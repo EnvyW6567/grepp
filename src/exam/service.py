@@ -1,8 +1,8 @@
 from typing import List
 
-from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
+from src.exam.exception import ExamCapacityExceededError, ExamNotFound
 from src.exam.model import Exam
 from src.exam.repository import ExamRepository
 from src.exam.schema import ExamCreate, ExamResponse
@@ -22,7 +22,7 @@ class ExamService:
         exam = self.repository.find_by_id(db, exam_id)
 
         if not exam:
-            return None
+            raise ExamNotFound(exam_id)
 
         return ExamResponse.model_validate(exam)
 
@@ -33,10 +33,7 @@ class ExamService:
 
     def create(self, db: Session, member: Member, exam_create: ExamCreate) -> ExamResponse:
         if exam_create.current_people > exam_create.max_people:
-            raise HTTPException(
-                status_code=400,
-                detail="Current people cannot exceed max people"
-            )
+            raise ExamCapacityExceededError()
 
         exam = Exam(
             member_id=member.id,
@@ -49,9 +46,18 @@ class ExamService:
 
         return ExamResponse.model_validate(saved_exam)
 
-    def delete(self, db: Session, exam: int) -> bool:
-        exam = self.repository.find_by_id(db, exam)
+    def delete(self, db: Session, exam_id: int) -> bool:
+        exam = self.repository.find_by_id(db, exam_id)
         if not exam:
-            return False
+            raise ExamNotFound(exam_id)
 
         return self.repository.delete(db, exam)
+
+    def update_people(self, db: Session, exam_id: int, people: int):
+        exam = self.repository.find_by_id(db, exam_id)
+        if not exam:
+            raise ExamNotFound(exam_id)
+
+        exam.current_people = people
+
+        return self.repository.save(db, exam)
