@@ -53,11 +53,14 @@ class ExamService:
 
         return self.repository.delete(db, exam)
 
-    def update_people(self, db: Session, exam_id: int, people: int):
+    def add_people(self, db: Session, exam_id: int, people: int):
         exam = self.repository.find_by_id(db, exam_id)
         if not exam:
             raise ExamNotFound(exam_id)
 
-        exam.current_people = people
+        if exam.current_people + people > exam.max_people:
+            raise ExamCapacityExceededError()
+
+        exam.current_people += people
 
         return self.repository.save(db, exam)
