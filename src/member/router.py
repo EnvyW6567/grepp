@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from src.db.db import get_db
-from src.member.schema import MemberResponse, MemberCreate, MemberUpdate, MemberLogin, LoginResponse
+from src.member.schema import MemberResponse, MemberCreate, MemberUpdate, LoginResponse
 from src.member.service import MemberService
 
 router = APIRouter(
@@ -44,7 +45,7 @@ def delete_member(member_id: int, db: Session = Depends(get_db)) -> None:
 
 
 @router.post("/login", response_model=LoginResponse, status_code=status.HTTP_200_OK)
-def login_member(member_login: MemberLogin, db: Session = Depends(get_db)) -> LoginResponse:
+def login_member(member_login: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)) -> LoginResponse:
     loginResponse = member_service.login(db, member_login)
 
     if loginResponse is None:
