@@ -16,7 +16,7 @@ member_service = MemberService()
 
 
 @router.post("/", response_model=MemberResponse, status_code=status.HTTP_201_CREATED)
-def create_member(member_create: MemberCreate, db: Session = Depends(get_db)) -> MemberResponse:
+def create(member_create: MemberCreate, db: Session = Depends(get_db)) -> MemberResponse:
     member = member_service.create(db, member_create)
 
     if member is None:
@@ -26,7 +26,7 @@ def create_member(member_create: MemberCreate, db: Session = Depends(get_db)) ->
 
 
 @router.put("/{member_id}", response_model=MemberResponse)
-def update_member(member_id: int, member: MemberUpdate, db: Session = Depends(get_db)) -> MemberResponse:
+def update(member_id: int, member: MemberUpdate, db: Session = Depends(get_db)) -> MemberResponse:
     member = member_service.update(db, member_id=member_id, member_update=member)
 
     if member is None:
@@ -36,7 +36,7 @@ def update_member(member_id: int, member: MemberUpdate, db: Session = Depends(ge
 
 
 @router.delete("/{member_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_member(member_id: int, db: Session = Depends(get_db)) -> None:
+def delete(member_id: int, db: Session = Depends(get_db)) -> None:
     success = member_service.delete(db, member_id=member_id)
     if not success:
         raise HTTPException(status_code=404, detail="Member not found")
@@ -45,7 +45,7 @@ def delete_member(member_id: int, db: Session = Depends(get_db)) -> None:
 
 
 @router.post("/login", response_model=LoginResponse, status_code=status.HTTP_200_OK)
-def login_member(member_login: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)) -> LoginResponse:
+def login(member_login: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)) -> LoginResponse:
     loginResponse = member_service.login(db, member_login)
 
     if loginResponse is None:

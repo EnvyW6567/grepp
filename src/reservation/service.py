@@ -97,7 +97,7 @@ class ReservationService:
         reservation.status = reservation_update_status.status
 
         if reservation_update_status.status == Status.CONFIRMED:
-            self.exam_service.add_people(db, reservation.exam_id, reservation.people)
+            self.exam_service.update_people(db, reservation.exam_id, reservation.people)
 
         updated_reservation = self.repository.save(db, reservation)
 
@@ -114,4 +114,4 @@ class ReservationService:
         success = self.repository.delete(db, reservation)
 
         if success and reservation.status == Status.CONFIRMED:
-            self.exam_service.add_people(db, reservation.exam_id, -reservation.people)
+            self.exam_service.update_people(db, reservation.exam_id, -reservation.people)

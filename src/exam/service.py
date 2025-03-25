@@ -46,14 +46,14 @@ class ExamService:
 
         return ExamResponse.model_validate(saved_exam)
 
-    def delete(self, db: Session, exam_id: int) -> bool:
+    def delete(self, db: Session, exam_id: int) -> None:
         exam = self.repository.find_by_id(db, exam_id)
         if not exam:
             raise ExamNotFound(exam_id)
 
-        return self.repository.delete(db, exam)
+        self.repository.delete(db, exam)
 
-    def add_people(self, db: Session, exam_id: int, people: int):
+    def update_people(self, db: Session, exam_id: int, people: int):
         exam = self.repository.find_by_id(db, exam_id)
         if not exam:
             raise ExamNotFound(exam_id)

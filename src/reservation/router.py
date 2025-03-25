@@ -19,9 +19,9 @@ reservation_service = ReservationService()
 
 
 @router.post("/", response_model=ReservationResponse, status_code=status.HTTP_201_CREATED)
-def create_reservation(reservationCreate: ReservationCreate,
-                       db: Session = Depends(get_db),
-                       member: Member = Depends(get_current_member)) -> ReservationResponse:
+def create(reservationCreate: ReservationCreate,
+           db: Session = Depends(get_db),
+           member: Member = Depends(get_current_member)) -> ReservationResponse:
     reservationResponse = reservation_service.create(db, member, reservationCreate)
 
     if reservationResponse is None:
@@ -31,27 +31,27 @@ def create_reservation(reservationCreate: ReservationCreate,
 
 
 @router.get("/", response_model=List[ReservationResponse], status_code=status.HTTP_200_OK)
-def get_reservations(db: Session = Depends(get_db),
-                     member: Member = Depends(get_current_member)) -> List[ReservationResponse]:
+def get_all(db: Session = Depends(get_db),
+            member: Member = Depends(get_current_member)) -> List[ReservationResponse]:
     return reservation_service.get_all(db, member)
 
 
 @router.get("/{reservation_id}", response_model=ReservationResponse, status_code=status.HTTP_200_OK)
-def get_reservation(reservation_id: int,
-                    db: Session = Depends(get_db),
-                    member: Member = Depends(get_current_member)) -> ReservationResponse:
+def get_by_id(reservation_id: int,
+              db: Session = Depends(get_db),
+              member: Member = Depends(get_current_member)) -> ReservationResponse:
     return reservation_service.get_by_id(db, member, reservation_id)
 
 
 @router.put("/", response_model=ReservationResponse, status_code=status.HTTP_200_OK)
-def update_reservation(reservation_update: ReservationUpdate,
-                       db: Session = Depends(get_db),
-                       member: Member = Depends(get_current_member)) -> ReservationResponse:
+def update(reservation_update: ReservationUpdate,
+           db: Session = Depends(get_db),
+           member: Member = Depends(get_current_member)) -> ReservationResponse:
     return reservation_service.update(db, member, reservation_update)
 
 
 @router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
-def delete_reservation(reservation_id: int,
-                       db: Session = Depends(get_db),
-                       member: Member = Depends(get_current_member)):
+def delete(reservation_id: int,
+           db: Session = Depends(get_db),
+           member: Member = Depends(get_current_member)):
     reservation_service.delete(db, member, reservation_id)
