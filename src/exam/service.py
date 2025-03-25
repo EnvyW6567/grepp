@@ -18,7 +18,7 @@ class ExamService:
 
         return [ExamResponse.model_validate(exam) for exam in exams]
 
-    def get_by_id(self, db: Session, exam_id: int) -> ExamResponse | None:
+    def get_by_id(self, db: Session, exam_id: int) -> ExamResponse:
         exam = self.repository.find_by_id(db, exam_id)
 
         if not exam:
