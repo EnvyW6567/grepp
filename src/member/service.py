@@ -89,4 +89,4 @@ class MemberService:
         }
         access_token = create_access_token(data=payload)
 
-        return LoginResponse.model_validate({"access_token": access_token})
+        return LoginResponse.model_validate({"access_token": access_token, "token_type": "bearer"})
