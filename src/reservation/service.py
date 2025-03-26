@@ -70,15 +70,10 @@ class ReservationService:
     def update(self, db: Session,
                member: Member,
                reservation_update: ReservationUpdate) -> ReservationResponse:
-        reservation = self.repository.find_by_exam_id_and_member_id(
-            db,
-            reservation_update.exam_id,
-            reservation_update.member_id
-        )
+        reservation = self.repository.find_by_id(db, reservation_update.id)
 
         if not reservation:
-            raise ReservationNotFound({"exam_id": reservation_update.exam_id,
-                                       "member_id": reservation_update.member_id})
+            raise ReservationNotFound({"id": reservation_update.id})
 
         self._validate_authorization(member, reservation)
 

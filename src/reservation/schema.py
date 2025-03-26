@@ -6,16 +6,15 @@ from src.reservation.model import Status
 
 
 class ReservationBase(BaseModel):
-    exam_id: int
     people: int = Field(ge=1, le=50000)
 
 
 class ReservationCreate(ReservationBase):
-    pass
+    exam_id: int
 
 
 class ReservationUpdate(ReservationBase):
-    pass
+    id: int
 
 
 class ReservationUpdateStatus(BaseModel):
