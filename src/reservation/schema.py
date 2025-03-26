@@ -1,13 +1,13 @@
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from src.reservation.model import Status
 
 
 class ReservationBase(BaseModel):
     exam_id: int
-    people: int
+    people: int = Field(ge=1, le=50000)
 
 
 class ReservationCreate(ReservationBase):
