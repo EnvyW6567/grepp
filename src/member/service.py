@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import os
 
 from sqlalchemy.orm import Session
@@ -7,6 +8,8 @@ from src.core.security.security import create_access_token
 from src.member.model import Member
 from src.member.repository import MemberRepository
 from src.member.schema import MemberCreate, MemberUpdate, MemberResponse, MemberLogin, LoginResponse
+
+logger = logging.getLogger(__name__)
 
 
 class MemberService:
@@ -51,12 +54,8 @@ class MemberService:
         saved_member = self.repository.save(db, member)
         return MemberResponse.model_validate(saved_member)
 
-    def update(self, db: Session, member_id: int, member_update: MemberUpdate) -> MemberResponse:
-        member = self.repository.find_by_id(db, member_id)
-        if not member:
-            return None
-
-        update_data = member_update.dict(exclude_unset=True)
+    def update(self, db: Session, member: Member, member_update: MemberUpdate) -> MemberResponse:
+        update_data = member_update.model_dump(exclude_unset=True)
 
         if 'password' in update_data:
             update_data['password'] = self._hash_password(update_data['password'])

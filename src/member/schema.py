@@ -22,7 +22,6 @@ class MemberCreate(MemberBase):
 class MemberUpdate(BaseModel):
     username: Optional[str] = None
     password: Optional[str] = None
-    role: Optional[Role] = None
 
 
 class MemberResponse(BaseModel):
