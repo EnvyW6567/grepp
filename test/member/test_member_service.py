@@ -8,7 +8,6 @@ from src.member.schema import MemberCreate, MemberUpdate, MemberResponse, LoginR
 from src.member.service import MemberService
 
 
-# 테스트용 픽스처 설정
 @pytest.fixture
 def member_service():
     service = MemberService()
