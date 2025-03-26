@@ -54,6 +54,7 @@ source venv/bin/activate
 1. 의존성 설치
 
 ```bash
+pip install poetry # poetry 미 설치 시
 poetry install
 ```
 
@@ -99,8 +100,23 @@ pytest
 
 ## 📋 API 문서
 
+### 배포 서버 활용하기
+
+[📋 API 문서 (배포 서버) 바로가기](https://grepp.envyw.dev/docs)
+
+#### Authorized 버튼 클릭 후 사용 (토큰 기반 인증)
+
+- Admin 계정
+    - `username`: admin001
+    - `password`: admin001
+- User(일반) 계정
+    - `username`: user001
+    - `password`: user001
+
+### 로컬 환경에서 실행할 경우
+
 ```
-/docs
+localhost:8000/docs # 로컬 환경 실행 시 
 ```
 
 ### 테스트 방법
