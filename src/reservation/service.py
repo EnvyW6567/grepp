@@ -8,7 +8,7 @@ from src.exam.model import Exam
 from src.exam.service import ExamService
 from src.member.model import Member
 from src.member.schema import Role
-from src.reservation.exception import ReservationNotFound, NotAllowed, ReservationValidationError
+from src.reservation.exception import ReservationNotFound, NotAllowed, ReservationValidationFailed
 from src.reservation.model import Reservation, Status
 from src.reservation.repository import ReservationRepository
 from src.reservation.schema import ReservationCreate, ReservationResponse, ReservationUpdateStatus, ReservationUpdate
@@ -23,10 +23,10 @@ class ReservationService:
 
     def _validate_reservation(self, exam: Exam, people: int):
         if datetime.now() > exam.date - timedelta(days=3):
-            raise ReservationValidationError()
+            raise ReservationValidationFailed()
 
         if exam.max_people - exam.current_people < people:
-            raise ReservationValidationError()
+            raise ReservationValidationFailed()
 
     def _validate_authorization(self, member: Member, reservation: Reservation):
         if member.role.value != Role.ADMIN.value and member.id != reservation.member_id:

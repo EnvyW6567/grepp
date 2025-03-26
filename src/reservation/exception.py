@@ -9,7 +9,7 @@ class ReservationException(ServiceException):
     pass
 
 
-class ReservationValidationError(ReservationException):
+class ReservationValidationFailed(ReservationException):
     def __init__(self):
         super().__init__(
             message="Reservation data validation failed",
