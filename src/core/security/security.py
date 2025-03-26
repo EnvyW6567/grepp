@@ -4,6 +4,7 @@ from typing import Optional
 
 from jose import jwt
 
+from src.core.security.exception import TokenValidationFailed
 from src.core.security.schema import TokenData
 
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -35,4 +36,4 @@ def decode_token(token: str) -> Optional[TokenData]:
         )
         return token_data
     except Exception:
-        return None
+        raise TokenValidationFailed
