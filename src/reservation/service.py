@@ -34,7 +34,7 @@ class ReservationService:
 
     def create(self, db: Session,
                member: Member,
-               reservation_create: ReservationCreate) -> ReservationResponse | None:
+               reservation_create: ReservationCreate) -> ReservationResponse:
         exam = self.exam_service.get_by_id(db, reservation_create.exam_id)
 
         self._validate_reservation(exam, reservation_create.people)

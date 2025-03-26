@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, status, Depends, HTTPException
+from fastapi import APIRouter, status, Depends
 from sqlalchemy.orm import Session
 
 from src.auth.dependencies import get_current_member
@@ -22,12 +22,7 @@ reservation_service = ReservationService()
 def create(reservationCreate: ReservationCreate,
            db: Session = Depends(get_db),
            member: Member = Depends(get_current_member)) -> ReservationResponse:
-    reservationResponse = reservation_service.create(db, member, reservationCreate)
-
-    if reservationResponse is None:
-        raise HTTPException(status_code=400, detail="Could not create reservation")
-
-    return reservationResponse
+    return reservation_service.create(db, member, reservationCreate)
 
 
 @router.get("/", response_model=List[ReservationResponse], status_code=status.HTTP_200_OK)
