@@ -2,11 +2,13 @@
 
 ## 🛠 기술 스택
 
-- **백엔드**: FastAPI
-- **데이터베이스**: PostgreSQL
-- **ORM**: SQLAlchemy
-- **인증**: JWT
-- **테스트**: Pytest
+| 분야     | 기술                                                                                                                |
+|--------|-------------------------------------------------------------------------------------------------------------------|
+| 백엔드    | ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)          |
+| 데이터베이스 | ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white) |
+| ORM    | ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white) |
+| 인증     | ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)            |
+| 테스트    | ![Pytest](https://img.shields.io/badge/Pytest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white)             |
 
 ---
 
